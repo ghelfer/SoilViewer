@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context=".MainActivity">
+
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/heatmap"
+            android:background="#fff"
+            android:text="M.O."
+            android:textColor="#000" />
+
+        <TextView
+            style="@style/heatmap"
+            android:background="#0000ff"
+            android:text="0-1%"
+            android:textColor="#fff" />
+
+        <TextView
+            style="@style/heatmap"
+            android:background="#0091ff"
+            android:text="1-2%"
+            android:textColor="#fff" />
+
+        <TextView
+            style="@style/heatmap"
+            android:background="#00ffda"
+            android:text="2-3%"
+            android:textColor="#000" />
+
+        <TextView
+            style="@style/heatmap"
+            android:background="#00ff48"
+            android:text="3-4%"
+            android:textColor="#000" />
+
+        <TextView
+            style="@style/heatmap"
+            android:background="#daff00"
+            android:text="4-5%"
+            android:textColor="#000" />
+
+        <TextView
+            style="@style/heatmap"
+            android:background="#ff9100"
+            android:text="5-6%"
+            android:textColor="#000" />
+
+        <TextView
+            style="@style/heatmap"
+            android:background="#ff0000"
+            android:text="6-7%"
+            android:textColor="#fff" />
+
+        <TextView
+            style="@style/heatmap"
+            android:background="#ff00ff"
+            android:text=">7%"
+            android:textColor="#fff" />
+
+    </LinearLayout>
+
+    <fragment
+        android:id="@+id/map"
+        android:name="com.google.android.gms.maps.MapFragment"
+        class="com.google.android.gms.maps.MapFragment"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
+</LinearLayout>

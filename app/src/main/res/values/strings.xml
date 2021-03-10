@@ -1,0 +1,39 @@
+<resources>
+    <string name="app_name">SoilViewer</string>
+    <string name="version">1.0.</string>
+    <string name="email">postmaster@ghelfer.net</string>
+    <string name="map">Mapa</string>
+    <string name="list">Lista</string>
+    <string name="hint_search">Pesquisar…</string>
+    <string name="title_activity_settings">Configurações</string>
+    <string name="info">Sobre</string>
+    <string name="where">Onde:</string>
+    <string name="when">Quando:</string>
+    <string name="today">Hoje</string>
+    <string name="week">7 Dias</string>
+    <string name="month">30 Dias</string>
+    <string name="radius">Raio de</string>
+    <string name="cancel">Cancelar</string>
+    <string name="radiuskm">Raio em km</string>
+    <string name="update">Atualização em min</string>
+    <string name="location">Localização</string>
+    <string name="version_title">Versão:</string>
+    <string name="policy_title">Política de Provacidade:</string>
+    <string name="set_location">A Localização está desligada. Por favor, ligue-a para uma melhor experiência."</string>
+    <string name="location_alert">A localização desligada restringe o funcionamento deste app."</string>
+    <string name="location_wait">Aguarde localização..."</string>
+    <string name="set_location_en">Your Locations Settings is set to Off. Please Enable Location to use this app."</string>
+    <string name="title_activity_login">Log in</string>
+    <!-- Strings related to login -->
+    <string name="prompt_email">Email</string>
+    <string name="prompt_password">Password</string>
+    <string name="action_sign_in">Sign in or register</string>
+    <string name="action_sign_in_short">Sign in</string>
+    <string name="error_invalid_email">This email address is invalid</string>
+    <string name="error_invalid_password">This password is too short</string>
+    <string name="error_incorrect_password">This password is incorrect</string>
+    <string name="error_field_required">This field is required</string>
+    <string name="permission_rationale">"Contacts permissions are needed for providing email
+        completions."
+    </string>
+</resources>
