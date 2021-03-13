@@ -4,6 +4,7 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -40,6 +41,7 @@ import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -49,9 +51,8 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected LocationManager locationManager;
     String gps = LocationManager.GPS_PROVIDER;
     String network = LocationManager.NETWORK_PROVIDER;
-
+    ProgressDialog dialog;
     protected String latitude = "", longitude = "";
-    private final String ACCESS_URL = "http://ghelfer.no-ip.org:8000?type=list";
 
     boolean gps_enabled = false, network_enabled = false;
 
@@ -89,7 +90,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             SharedPreferences settings = getSharedPreferences("UserInfo", MODE_PRIVATE);
             SharedPreferences.Editor editor = settings.edit();
             editor.putBoolean("local", true);
-            editor.commit();
+            editor.apply();
         }
 
         load();
@@ -104,7 +105,6 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         try {
 
             if (ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED && ActivityCompat.checkSelfPermission(this, android.Manifest.permission.ACCESS_COARSE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
-
                 return;
             }
             lastKnownLocation = locationManager.getLastKnownLocation(gps);
@@ -197,8 +197,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     private void buscaDados() {
 
         AsyncHttpClient client = new AsyncHttpClient();
-        client.addHeader("Version", "1.0");
-        client.get(ACCESS_URL, new AsyncHttpResponseHandler() {
+        client.get(Tools.ACCESS_URL + "/ws.php?soil", new AsyncHttpResponseHandler() {
+
+
             @Override
             public void onSuccess(int statusCode, Header[] headers, byte[] response) {
                 try {
@@ -214,14 +215,25 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 //showProgress(false);
                 MessageBox(error.getLocalizedMessage());
             }
+
+            @Override
+            public void onStart() {
+                dialog = ProgressDialog.show(MainActivity.this, "Wait",
+                        "Downloading data...");
+            }
+
+            @Override
+            public void onFinish() {
+                dialog.dismiss();
+            }
         });
     }
 
     private void populaLista(String result) {
         try {
-
+            mGoogleMap.clear();
             JSONObject obj = new JSONObject(result);
-            JSONArray array = obj.getJSONArray("sample");
+            JSONArray array = obj.getJSONArray("result");
             Log.d("DATA", array.length() + " items");
             for (int i = 0; i < array.length(); i++) {
                 JSONObject json = array.getJSONObject(i);
@@ -241,17 +253,20 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private void addPushPin(String lat, String lon, String om, String clay) {
+        if (om.isEmpty() || clay.isEmpty() || (om.equals("null") || clay.equals("null")))
+            return;
         double mo = Double.parseDouble(om);
         mGoogleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(Double.parseDouble(lat), Double.parseDouble(lon)))
                 .icon(BitmapDescriptorFactory.defaultMarker(setCor(mo)))
-                .title("O.M.:" + formatDigits(1,om) + " Clay:" + formatDigits(2,clay)));
+                .title(formatData(om,clay)));
 
     }
 
-    private String formatDigits(int ctrl, String val) {
-        int idx = val.indexOf(".");
-        return ctrl==1?val.substring(0,idx+3)+"%":val.substring(0,idx+2)+"%";
+    private String formatData(String o, String c) {
+        Double om = Double.parseDouble(o);
+        Double clay = Double.parseDouble(c);
+        return String.format(Locale.US, "O.M.: %.2f  Clay: %.0f", om, clay);
     }
 
     private float setCor(double mo) {
@@ -303,9 +318,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     @Override
-    public void onResume() {
-        super.onResume();
-        load();
+    public void onRestart() {
+        super.onRestart();
+        buscaDados();
     }
 
 
@@ -354,6 +369,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
         if (id == R.id.action_add) {
             startActivity(new Intent(this, AddActivity.class));
+            return true;
+        }
+        if (id == R.id.action_list) {
+            startActivity(new Intent(this, HistActivity.class));
+            return true;
+        }
+        if (id == R.id.action_sync) {
+            mHandlerTask.run();
             return true;
         }
         return super.onOptionsItemSelected(item);

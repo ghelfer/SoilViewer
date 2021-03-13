@@ -14,14 +14,22 @@ import android.os.Bundle;
 import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.Toast;
+
+import com.loopj.android.http.AsyncHttpClient;
+import com.loopj.android.http.AsyncHttpResponseHandler;
+import com.loopj.android.http.RequestParams;
+import com.loopj.android.http.ResponseHandlerInterface;
+
+import cz.msebera.android.httpclient.Header;
 
 public class AddActivity extends AppCompatActivity {
 
     LocationManager locationManager;
     String latitude, longitude;
-    EditText txtLat, txtLon, txtName;
+    EditText txtLat, txtLon, txtName, txtOm, txtClay;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +39,8 @@ public class AddActivity extends AppCompatActivity {
         txtLat = findViewById(R.id.lat);
         txtLon = findViewById(R.id.lon);
         txtName = findViewById(R.id.name);
+        txtOm = findViewById(R.id.om);
+        txtClay = findViewById(R.id.clay);
     }
 
 
@@ -94,4 +104,48 @@ public class AddActivity extends AppCompatActivity {
 
     }
 
+    public void inputClick(View view) {
+
+        RequestParams params = new RequestParams();
+        params.add("lat", txtLat.getText().toString());
+        params.add("lon", txtLon.getText().toString());
+        params.add("name", txtName.getText().toString());
+        params.add("om", txtOm.getText().toString());
+        params.add("clay", txtClay.getText().toString());
+
+        AsyncHttpClient client = new AsyncHttpClient();
+        client.addHeader("Version", "1.0");
+        client.post(Tools.ACCESS_URL + "/ws.php", params, new AsyncHttpResponseHandler() {
+            @Override
+            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
+                try {
+                    String result = new String(response, "UTF-8");
+                    MessageBox(result);
+                    clean();
+                } catch (Exception ex) {
+                    MessageBox("General Exception: " + ex.getMessage());
+                }
+            }
+
+            @Override
+            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
+                //showProgress(false);
+                MessageBox(error.getLocalizedMessage());
+            }
+        });
+
+    }
+
+    private void clean() {
+        String c = "";
+        txtLat.setText(c);
+        txtLon.setText(c);
+        txtName.setText(c);
+        txtOm.setText(c);
+        txtClay.setText(c);
+    }
+
+    private void MessageBox(String s) {
+        Toast.makeText(this, s, Toast.LENGTH_LONG).show();
+    }
 }

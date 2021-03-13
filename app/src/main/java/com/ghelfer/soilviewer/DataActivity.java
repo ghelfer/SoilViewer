@@ -60,7 +60,7 @@ public class DataActivity extends AppCompatActivity {
 
         AsyncHttpClient client = new AsyncHttpClient();
         client.addHeader("Version", "1.0");
-        client.get("http://mlservices.top:8000/?type=list", new AsyncHttpResponseHandler() {
+        client.get(Tools.ACCESS_URL + "/ws.php?today", new AsyncHttpResponseHandler() {
 
             @Override
             public void onStart() {
@@ -85,7 +85,7 @@ public class DataActivity extends AppCompatActivity {
 
                             Map<String, String> mapa = new HashMap<>();
                             mapa.put("id", id);
-                            mapa.put("descr", String.format(Locale.US, "O.M.: %.2f  Clay: %.2f", om, clay));
+                            mapa.put("descr", String.format(Locale.US, "O.M.: %.2f  Clay: %.1f", om, clay));
                             mapa.put("sample", sample);
                             mapa.put("dt", dt);
                             lista.add(mapa);

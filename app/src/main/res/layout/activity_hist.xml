@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:orientation="vertical"
+    android:layout_height="match_parent"
+    tools:context=".HistActivity">
+
+    <LinearLayout
+        android:id="@+id/edit"
+        android:orientation="vertical"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <EditText
+            android:id="@+id/om"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="O.M.%"
+            android:inputType="numberDecimal"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:textColor="@color/apple"
+            android:singleLine="true" />
+
+        <EditText
+            android:id="@+id/clay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="Clay"
+            android:inputType="numberDecimal"
+            android:textSize="24sp"
+            android:gravity="center"
+            android:textColor="@color/apple"
+            android:singleLine="true" />
+
+        <Button
+            android:id="@+id/button"
+            android:background="#FAFAFA"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:text="Update"
+            android:onClick="updateClick"
+            android:layout_marginStart="75dp"
+            android:layout_marginEnd="75dp"
+            android:textStyle="bold" />
+
+
+    </LinearLayout>
+
+    <ListView
+        android:id="@+id/listView"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+</LinearLayout>

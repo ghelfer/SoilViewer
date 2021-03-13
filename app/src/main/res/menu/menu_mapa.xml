@@ -16,4 +16,16 @@
         android:orderInCategory="90"
         app:showAsAction="always" />
 
+    <item android:id="@+id/action_list"
+        android:title="List All"
+        android:icon="@drawable/ic_list"
+        android:orderInCategory="80"
+        app:showAsAction="always" />
+
+    <item android:id="@+id/action_sync"
+        android:title="Reload"
+        android:icon="@drawable/ic_sync"
+        android:orderInCategory="70"
+        app:showAsAction="withText" />
+
 </menu>

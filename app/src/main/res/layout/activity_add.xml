@@ -26,6 +26,7 @@
                 android:gravity="center"
                 android:text="Add place"
                 android:textColor="#000"
+                android:textStyle="bold"
                 android:layout_marginBottom="20dp"
                 android:textSize="32sp">
             </TextView>
@@ -40,8 +41,9 @@
                 android:inputType="numberDecimal"
                 android:imeOptions="actionUnspecified"
                 android:maxLines="1"
+                android:textStyle="bold"
                 android:textSize="24sp"
-                android:textColor="#0000FF"
+                android:textColor="@color/apple"
                 android:singleLine="true" />
 
 
@@ -51,11 +53,12 @@
                 android:layout_height="wrap_content"
                 android:hint="Longitude"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:textSize="24sp"
                 android:inputType="numberDecimal"
                 android:imeOptions="actionUnspecified"
                 android:maxLines="1"
-                android:textColor="#0000FF"
+                android:textColor="@color/apple"
                 android:singleLine="true" />
 
 
@@ -67,11 +70,35 @@
                 android:inputType="textMultiLine"
                 android:textSize="24sp"
                 android:gravity="center"
+                android:textStyle="bold"
                 android:lines="2"
                 android:textColor="#FF0000"
-                android:scrollbars="vertical"
+                android:scrollbars="vertical"/>
+
+
+            <EditText
+                android:id="@+id/om"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="O.M.%"
+                android:textStyle="bold"
+                android:inputType="numberDecimal"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:textColor="@color/apple"
                 android:singleLine="true" />
 
+            <EditText
+                android:id="@+id/clay"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Clay%"
+                android:textStyle="bold"
+                android:inputType="numberDecimal"
+                android:textSize="24sp"
+                android:gravity="center"
+                android:textColor="@color/apple"
+                android:singleLine="true" />
 
             <Button
                 android:id="@+id/button"
@@ -80,6 +107,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="16dp"
                 android:text="Input"
+                android:onClick="inputClick"
                 android:layout_marginStart="75dp"
                 android:layout_marginEnd="75dp"
                 android:textStyle="bold" />
