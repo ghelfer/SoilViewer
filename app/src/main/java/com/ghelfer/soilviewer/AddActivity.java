@@ -4,10 +4,13 @@ import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
 
+import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.database.sqlite.SQLiteDatabase;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
@@ -15,13 +18,19 @@ import android.provider.Settings;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.EditText;
+import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.loopj.android.http.AsyncHttpClient;
 import com.loopj.android.http.AsyncHttpResponseHandler;
 import com.loopj.android.http.RequestParams;
 import com.loopj.android.http.ResponseHandlerInterface;
+
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 
 import cz.msebera.android.httpclient.Header;
 
@@ -36,11 +45,12 @@ public class AddActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add);
 
-        txtLat = findViewById(R.id.lat);
-        txtLon = findViewById(R.id.lon);
-        txtName = findViewById(R.id.name);
-        txtOm = findViewById(R.id.om);
-        txtClay = findViewById(R.id.clay);
+        txtLat = findViewById(R.id.txtlat);
+        txtLon = findViewById(R.id.txtlon);
+        txtName = findViewById(R.id.txtname);
+        txtOm = findViewById(R.id.txtom);
+        txtClay = findViewById(R.id.txtclay);
+
     }
 
 
@@ -106,33 +116,30 @@ public class AddActivity extends AppCompatActivity {
 
     public void inputClick(View view) {
 
-        RequestParams params = new RequestParams();
-        params.add("lat", txtLat.getText().toString());
-        params.add("lon", txtLon.getText().toString());
-        params.add("name", txtName.getText().toString());
-        params.add("om", txtOm.getText().toString());
-        params.add("clay", txtClay.getText().toString());
 
-        AsyncHttpClient client = new AsyncHttpClient();
-        client.addHeader("Version", "1.0");
-        client.post(Tools.ACCESS_URL + "/ws.php", params, new AsyncHttpResponseHandler() {
-            @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] response) {
-                try {
-                    String result = new String(response, "UTF-8");
-                    MessageBox(result);
-                    clean();
-                } catch (Exception ex) {
-                    MessageBox("General Exception: " + ex.getMessage());
-                }
-            }
+        //Data e Hora
+        Calendar c = Calendar.getInstance();
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+        String formattedDate = df.format( c.getTime() );
 
-            @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                //showProgress(false);
-                MessageBox(error.getLocalizedMessage());
-            }
-        });
+        //Banco de dados
+        DatabaseHelper helper= new DatabaseHelper(this);
+        SQLiteDatabase db= helper.getWritableDatabase();
+        ContentValues values= new ContentValues();
+        values.put("name", txtName.getText().toString());
+        values.put("latitude",  txtLat.getText().toString() );
+        values.put("longitude",  txtLon.getText().toString() );
+        values.put("dt",  formattedDate );
+        long resultado= db.insert("soil", null, values);
+        if( resultado != -1 ){
+            Toast.makeText(this, "Salvo com sucesso!!", Toast.LENGTH_SHORT).show();
+            clean();
+        }else{
+            Toast.makeText(this, "Erro ao salvar registro!",
+                    Toast.LENGTH_SHORT).show();
+        }
+        helper.close();
+
 
     }
 

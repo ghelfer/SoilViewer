@@ -3,14 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".DataActivity">
 
-    <item android:id="@+id/action_not"
-        android:title="Atualizar"
-        android:icon="@drawable/ic_notif_none"
+    <item android:id="@+id/action_last"
+        android:title="This month"
+        android:icon="@drawable/ic_last"
         android:orderInCategory="100"
         app:showAsAction="always" />
 
     <item android:id="@+id/action_sync"
-        android:title="Atualizar"
+        android:title="Update"
         android:icon="@drawable/ic_sync"
         android:orderInCategory="200"
         app:showAsAction="always" />

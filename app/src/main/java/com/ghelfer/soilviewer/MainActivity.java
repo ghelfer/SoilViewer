@@ -3,15 +3,18 @@ package com.ghelfer.soilviewer;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
 
-import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
 import android.graphics.Color;
 import android.graphics.Point;
+import android.graphics.drawable.Drawable;
 import android.location.Criteria;
 import android.location.Location;
 import android.location.LocationListener;
@@ -29,6 +32,7 @@ import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapFragment;
 import com.google.android.gms.maps.OnMapReadyCallback;
+import com.google.android.gms.maps.model.BitmapDescriptor;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MapStyleOptions;
@@ -51,14 +55,12 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     protected LocationManager locationManager;
     String gps = LocationManager.GPS_PROVIDER;
     String network = LocationManager.NETWORK_PROVIDER;
-    ProgressDialog dialog;
     protected String latitude = "", longitude = "";
-
     boolean gps_enabled = false, network_enabled = false;
-
+    boolean flag2 = true;
     private static int INTERVAL = 1000 * 60; //1 minute
     Handler mHandler = new Handler();
-    boolean flag = false, flag2 = false;
+    boolean flag = false;
 
     Display display;
     Point size;
@@ -143,7 +145,7 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         String provider = locationManager.getBestProvider(criteria, true);
         if (provider != null) {
             locationManager.requestLocationUpdates(provider, 0, 0, locationListenerBest);//2 * 60 * 1000, 10
-            MessageBox("Best Provider is " + provider);
+            //MessageBox("Best Provider is " + provider);
         }
     }
 
@@ -180,8 +182,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
             return;
         }
         mGoogleMap.setMyLocationEnabled(true);
-        mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json2));
-        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-29.5,-52.5) , 7.0f) );
+        mGoogleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+        //mGoogleMap.setMapStyle(MapStyleOptions.loadRawResourceStyle(this, R.raw.style_json1));
+        mGoogleMap.moveCamera(CameraUpdateFactory.newLatLngZoom(new LatLng(-29.264,-49.86) , 16.0f) );
     }
 
 
@@ -212,20 +215,14 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
 
             @Override
             public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                //showProgress(false);
                 MessageBox(error.getLocalizedMessage());
             }
 
             @Override
             public void onStart() {
-                dialog = ProgressDialog.show(MainActivity.this, "Wait",
-                        "Downloading data...");
+                MessageBox("Wait... downloading data!");
             }
 
-            @Override
-            public void onFinish() {
-                dialog.dismiss();
-            }
         });
     }
 
@@ -241,9 +238,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
                 String clay = json.get("clay").toString();
                 String lat = json.get("lat").toString();
                 String lon = json.get("lon").toString();
-                Log.d("DATA", json.get("id").toString());
+                String name = json.get("name").toString();
                 Log.d("DATA", lat + lon);
-                addPushPin(lat, lon, om, clay);
+                addPushPin(lat, lon, om, clay, name);
             }
 
         } catch (Exception ex) {
@@ -252,15 +249,46 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         }
     }
 
-    private void addPushPin(String lat, String lon, String om, String clay) {
+    private void addPushPin(String lat, String lon, String om, String clay, String name) {
         if (om.isEmpty() || clay.isEmpty() || (om.equals("null") || clay.equals("null")))
             return;
         double mo = Double.parseDouble(om);
         mGoogleMap.addMarker(new MarkerOptions()
                 .position(new LatLng(Double.parseDouble(lat), Double.parseDouble(lon)))
-                .icon(BitmapDescriptorFactory.defaultMarker(setCor(mo)))
-                .title(formatData(om,clay)));
+                .icon(bitmapDescriptorFromVector(this, getResFromOm(mo)))
+                .title("ID: " + name + " " + formatData(om,clay)));
 
+    }
+    private BitmapDescriptor bitmapDescriptorFromVector(Context context, int vectorResId) {
+        Drawable vectorDrawable = ContextCompat.getDrawable(context, vectorResId);
+        int w = (int)(vectorDrawable.getIntrinsicWidth()*1.35);
+        int h = (int)(vectorDrawable.getIntrinsicHeight()*1.35);
+        vectorDrawable.setBounds(0, 0, w, h);
+        Bitmap bitmap = Bitmap.createBitmap(w, h, Bitmap.Config.ARGB_8888);
+        Canvas canvas = new Canvas(bitmap);
+        vectorDrawable.draw(canvas);
+        return BitmapDescriptorFactory.fromBitmap(bitmap);
+    }
+
+    private int getResFromOm(double mo) {
+        if (mo <= 0)
+            return flag2?R.drawable.ic_pin_white:R.drawable.ic_pin_grey;
+        else if (mo > 0 && mo < 1)
+            return R.drawable.ic_pin_01;
+        else if (mo > 1 && mo < 2)
+            return R.drawable.ic_pin_12;
+        else if (mo >= 2 && mo < 3)
+            return R.drawable.ic_pin_23;
+        else if (mo >= 3 && mo < 4)
+            return R.drawable.ic_pin_34;
+        else if (mo >= 4 && mo < 5)
+            return R.drawable.ic_pin_45;
+        else if (mo >= 5 && mo < 6)
+            return R.drawable.ic_pin_56;
+        else if (mo >= 6 && mo < 7)
+            return R.drawable.ic_pin_67;
+        else
+            return R.drawable.ic_pin_70;
     }
 
     private String formatData(String o, String c) {
@@ -270,9 +298,9 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
     }
 
     private float setCor(double mo) {
-        if (mo < 1)
-            return getMarkerColor("#0000ff");
-        else if (mo >= 1 && mo < 2)
+        if (mo <= 0)
+            return getMarkerColor("#000000");
+        else if (mo > 0 && mo < 2)
             return getMarkerColor("#0091ff");
         else if (mo >= 2 && mo < 3)
             return getMarkerColor("#00ffda");
@@ -378,6 +406,19 @@ public class MainActivity extends AppCompatActivity implements OnMapReadyCallbac
         if (id == R.id.action_sync) {
             mHandlerTask.run();
             return true;
+        }
+        if (id == R.id.action_style){
+            if (flag2) {
+                mGoogleMap.setMapType(GoogleMap.MAP_TYPE_TERRAIN);
+                flag2 = false;
+                mHandlerTask.run();
+            }
+            else {
+
+                mGoogleMap.setMapType(GoogleMap.MAP_TYPE_SATELLITE);
+                flag2 = true;
+                mHandlerTask.run();
+            }
         }
         return super.onOptionsItemSelected(item);
     }

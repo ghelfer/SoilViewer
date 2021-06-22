@@ -1,0 +1,12 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context=".DataActivity">
+
+    <item android:id="@+id/action_local"
+        android:title="Local data"
+        android:icon="@drawable/ic_db"
+        android:orderInCategory="100"
+        app:showAsAction="always" />
+
+</menu>

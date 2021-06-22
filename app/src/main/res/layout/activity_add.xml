@@ -7,111 +7,101 @@
     android:orientation="vertical"
     tools:context=".AddActivity">
 
-    <ScrollView
-        android:id="@+id/login_form"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
 
-        <LinearLayout
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_marginTop="22dp"
+        android:orientation="vertical">
+
+
+        <EditText
+            android:id="@+id/txtlat"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="32dp"
-            android:orientation="vertical">
-
-            <TextView
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:gravity="center"
-                android:text="Add place"
-                android:textColor="#000"
-                android:textStyle="bold"
-                android:layout_marginBottom="20dp"
-                android:textSize="32sp">
-            </TextView>
+            android:gravity="center"
+            android:hint="Latitude"
+            android:imeOptions="actionUnspecified"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/apple"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
 
-            <EditText
-                android:id="@+id/lat"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Latitude"
-                android:gravity="center"
-                android:inputType="numberDecimal"
-                android:imeOptions="actionUnspecified"
-                android:maxLines="1"
-                android:textStyle="bold"
-                android:textSize="24sp"
-                android:textColor="@color/apple"
-                android:singleLine="true" />
+        <EditText
+            android:id="@+id/txtlon"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Longitude"
+            android:imeOptions="actionUnspecified"
+            android:inputType="numberDecimal"
+            android:maxLines="1"
+            android:singleLine="true"
+            android:textColor="@color/apple"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
 
-            <EditText
-                android:id="@+id/lon"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Longitude"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:textSize="24sp"
-                android:inputType="numberDecimal"
-                android:imeOptions="actionUnspecified"
-                android:maxLines="1"
-                android:textColor="@color/apple"
-                android:singleLine="true" />
+        <EditText
+            android:id="@+id/txtname"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Sample Name"
+            android:inputType="textMultiLine"
+            android:scrollbars="vertical"
+            android:textColor="#FF0000"
+
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
 
-            <EditText
-                android:id="@+id/name"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Sample Name"
-                android:inputType="textMultiLine"
-                android:textSize="24sp"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:lines="2"
-                android:textColor="#FF0000"
-                android:scrollbars="vertical"/>
+        <EditText
+            android:id="@+id/txtom"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="O.M.%"
+            android:inputType="numberDecimal"
+            android:singleLine="true"
+            android:textColor="@color/apple"
+            android:textSize="24sp"
+            android:textStyle="bold" />
+
+        <EditText
+            android:id="@+id/txtclay"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:hint="Clay%"
+            android:inputType="numberDecimal"
+            android:singleLine="true"
+            android:textColor="@color/apple"
+            android:textSize="24sp"
+            android:textStyle="bold" />
 
 
-            <EditText
-                android:id="@+id/om"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="O.M.%"
-                android:textStyle="bold"
-                android:inputType="numberDecimal"
-                android:textSize="24sp"
-                android:gravity="center"
-                android:textColor="@color/apple"
-                android:singleLine="true" />
 
-            <EditText
-                android:id="@+id/clay"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:hint="Clay%"
-                android:textStyle="bold"
-                android:inputType="numberDecimal"
-                android:textSize="24sp"
-                android:gravity="center"
-                android:textColor="@color/apple"
-                android:singleLine="true" />
 
             <Button
                 android:id="@+id/button"
-                android:background="#FAFAFA"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="16dp"
-                android:text="Input"
-                android:onClick="inputClick"
                 android:layout_marginStart="75dp"
+                android:layout_marginTop="20dp"
                 android:layout_marginEnd="75dp"
+                android:background="#FAFAFA"
+                android:onClick="inputClick"
+                android:text="Input"
                 android:textStyle="bold" />
 
-        </LinearLayout>
-    </ScrollView>
+
+
+    </LinearLayout>
+
+
+
 </LinearLayout>

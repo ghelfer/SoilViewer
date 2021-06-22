@@ -38,7 +38,7 @@ public class LoginActivity extends AppCompatActivity  {
 
 
     private static final String[] CREDENTIALS = new String[]{
-            "ghelfer@gmail.com",
+            "ghelfer@gmail.com", "Mindriot1204!"
     };
 
     private UserLoginTask mAuthTask = null;
@@ -80,7 +80,8 @@ public class LoginActivity extends AppCompatActivity  {
         mLoginFormView = findViewById(R.id.login_form);
         mProgressView = findViewById(R.id.login_progress);
 
-        mEmailView.setText("ghelfer@gmail.com");
+        mEmailView.setText(CREDENTIALS[0]);
+        mPasswordView.setText(CREDENTIALS[1]);
     }
 
 

@@ -6,7 +6,7 @@
 
     <item android:id="@+id/action_lab"
         android:title="Data"
-        android:icon="@drawable/ic_lab"
+        android:icon="@drawable/ic_map"
         android:orderInCategory="100"
         app:showAsAction="always" />
 
@@ -26,6 +26,12 @@
         android:title="Reload"
         android:icon="@drawable/ic_sync"
         android:orderInCategory="70"
+        app:showAsAction="withText" />
+
+    <item android:id="@+id/action_style"
+        android:title="Change style"
+        android:icon="@drawable/ic_sync"
+        android:orderInCategory="60"
         app:showAsAction="withText" />
 
 </menu>
